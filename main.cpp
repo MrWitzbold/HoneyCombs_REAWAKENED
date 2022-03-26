@@ -8,7 +8,7 @@ int main()
     while(true)
     {
         string command;
-        cout << "Press 1 to convert dna.txt into rna.txt\n: ";
+        cout << "\n\nPress 1 to convert dna.txt into rna.txt\n: ";
         cin >> command;
 
         if(command == "1") // CONVERT DNA INTO RNA
