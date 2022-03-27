@@ -52,8 +52,65 @@ int main()
         }
         else if(command == "2") // GENERATE AMINO-ACID PERCENTAGES
         {
-            string amino_acids[28] = {"Phenylysine", "Leucine", "Isoleucine", "Methionine", "Valine", "Serine", "Threonine", "Alanine", "Tyrosine", "Tryptophan", "Histidine", "Glutamine", "Asparagine", "Lysine", "Aspartic acid", "Glutamic acid", "Arginine", "Cysteine", "Proline", "Glutamine", "Arginine", "Histidine", "Glutamine", "Glutamine", "Glutamine", "Glutamine", "Glutamine", "Glutamine"};
-            string amino_acid_codons[25][6] = {{"UUU", "UUC", "", "", "", ""}, {"UUA", "UUG", "CUU", "CUC", "CUA", "CUG"}, {"AUU", "AUC", "AUA", "", "", ""}, {"GUU", "GUC", "GUA", "GUG", "", ""}, {"UCU", "UCC", "UCA", "UCG", "AGU", "AGC"}, {"CCU", "CCC", "CCA", "CCG", "", ""}, {"ACU", "ACC", "ACA", "ACG", "", ""}, {"GCU", "GCC", "GCA", "GCG", "", ""}, {"UAU", "UAC", "", "", "", ""}, {"CAU", "CAC", "", "", "", ""}, {"AAU", "AAC", "", "", "", ""}, {"GAU", "GAC", "", "", "", ""}, {"UGU", "UGC", "", "", "", ""}, {"CGU", "CGC", "CGA", "CGG", "AGA", "AGG"}, {"GGU", "GGC", "GGA", "GGG", "", ""}, {"UAA", "UAG", "UGA", "", "", ""}, {"CAA", "CAG", "", "", "", ""}, {"AAA", "AAG", "", "", "", ""}, {"GAA", "GAG", "", "", ""}, {"CGU", "CGC", "CGA", "CGG", "AGA", "AGG"}, {"GGU", "GGC", "GGA", "GGG", "", ""}, {"GGU", "GGC", "GGA", "GGG", "", ""}, {"GGU", "GGC", "GGA", "GGG", "", ""}, {"GGU", "GGC", "GGA", "GGG", "", ""}, {"GGU", "GGC", "GGA", "GGG", "", ""}};
+            string amino_acids[25] = {"Phenylalanine", "Leucine", "Isoleucine", "Methionine", "Valine", "Serine", "Proline", "Threonine", "Alanine", "Tyrosine", "Stop (Ochre)", "Stop (Amber)", "Histidine", "Glutamine", "Asparagine", "Lysine", "Aspartic Acid", "Glutamic Acid", "Cysteine", "Stop (Opal)", "Tryptophan", "Arginine", "Serine", "Arginine", "Glycine"};
+            int amino_acid_count[28] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            int amino_acid_total = 0;
+            string amino_acid_codons[25][6] = {{"UUU", "UUC"}, {"UUA", "UUG", "CUU", "CUC", "CUA", "CUG"}, {"AUU", "AUC", "AUA", "AUG"}, {"GUU", "GUC", "GUA", "GUG"}, {"UCU", "UCC", "UCA", "UCG"}, {"CCU", "UCG", "CCU", "CCC", "CCA", "CCG"}, {"ACU", "ACC", "ACA", "ACG"}, {"GCU", "GCC", "GCA", "GCG"}, {"UAU", "UAC"}, {"UAA"}, {"UAG"}, {"CAU", "CAC"}, {"CAA", "CAG"}, {"AAU", "AAC"}, {"AAA", "AAG"}, {"GAU", "GAC"}, {"GAA", "GAG"}, {"UGU", "UGC"}, {"UGA"}, {"UGG"}, {"CGU", "CGC", "CGA", "CGG"}, {"AGU", "AGC"}, {"AGA", "AGG"}, {"GGU", "GGC"}, {"GGA", "GGG"}};
+
+            ifstream t("rna.txt");
+            stringstream buffer;
+            buffer << t.rdbuf();
+            string rna = buffer.str();
+
+            for(int i = 0; i < rna.length(); i+=3)
+            {
+                for(int j = 0; j < 25; j++)
+                {
+                    if(rna.substr(i, 3) == amino_acid_codons[j][0])
+                    {
+                        amino_acid_count[j]++;
+                        amino_acid_total++;
+                    }
+                    else if(rna.substr(i, 3) == amino_acid_codons[j][1])
+                    {
+                        amino_acid_count[j]++;
+                        amino_acid_total++;
+                    }
+                    else if(rna.substr(i, 3) == amino_acid_codons[j][2])
+                    {
+                        amino_acid_count[j]++;
+                        amino_acid_total++;
+                    }
+                    else if(rna.substr(i, 3) == amino_acid_codons[j][3])
+                    {
+                        amino_acid_count[j]++;
+                        amino_acid_total++;
+                    }
+                    else if(rna.substr(i, 3) == amino_acid_codons[j][4])
+                    {
+                        amino_acid_count[j]++;
+                        amino_acid_total++;
+                    }
+                    else if(rna.substr(i, 3) == amino_acid_codons[j][5])
+                    {
+                        amino_acid_count[j]++;
+                        amino_acid_total++;
+                    }
+                }
+            }
+
+            ofstream report;
+            report.open("report.txt");
+            report << "=================== Amino Acid Percentage =================== \n";
+            for(int i = 0; i < 28; i++)
+            {
+                report << amino_acids[i] << ": " <<(double)amino_acid_count[i]/amino_acid_total*100 << "%\n\n";
+                if(amino_acids[i] == "Glycine")
+                {
+                    break;
+                }
+            }
+            report.close();
         }
     }
 }
